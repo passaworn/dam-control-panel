@@ -24,7 +24,7 @@ export default class SimpleCtrl extends MetricsPanelCtrl {
     loading: false,
     text: 'Hello World',
     request: 'http',
-    method: 'GET',
+    // method: 'GET',
     damUrl: 'http://127.0.0.1:1880/test',
     damOptions: {
       control: 'relay',
@@ -107,53 +107,26 @@ export default class SimpleCtrl extends MetricsPanelCtrl {
 
   sendData(switchONOFF) {
     this.panel.loading = true;
-    // this.time = 'timenull';
-    // setTimeout(() => {
-    //   console.log('timeout');
-    //   this.panel.loading = false;
-    //   // this.$scope.ctrl.panel.loading = false;
-    //   // console.log(this.$scope);
-    //   this.time = 'changetimeout';
-
     //   this.render();
     //   this.refresh();
-    //   console.log(this.panel.loading);
-    // }, 2000);
     if (this.panel.damOptions.control === 'relay') {
       // ถ้าเป็น relay แบบ ON,OFF
       if (this.panel.damOptions.mode !== 'toggle') {
-        if (this.panel.method === 'POST') {
-          axios
-            .post(this.panel.damUrl, {
-              key: 'relay' + this.panel.damOptions.relayChanel,
-              value: this.panel.damOptions.mode,
-            })
-            .then(response => {
-              this.panel.loading = false;
-              console.log(response);
-              this.refresh();
-            })
-            .catch(error => {
-              this.panel.loading = false;
-              console.log(error);
-              this.refresh();
-            });
-        } else if (this.panel.method === 'GET') {
-          axios
-            .get(this.panel.damUrl, {
-              // value: this.panel.damOptions.mode,
-            })
-            .then(response => {
-              this.panel.loading = false;
-              console.log(response);
-              this.refresh();
-            })
-            .catch(error => {
-              this.panel.loading = false;
-              console.log(error);
-              this.refresh();
-            });
-        }
+        axios
+          .post(this.panel.damUrl, {
+            key: 'relay' + this.panel.damOptions.relayChanel,
+            value: this.panel.damOptions.mode,
+          })
+          .then(response => {
+            this.panel.loading = false;
+            console.log(response);
+            this.refresh();
+          })
+          .catch(error => {
+            this.panel.loading = false;
+            console.log(error);
+            this.refresh();
+          });
       } else {
         // ถ้าเป็น relay แล้วเป็นแบบ toggle
         if (this.panel.switchButton === false) {
@@ -184,72 +157,38 @@ export default class SimpleCtrl extends MetricsPanelCtrl {
       // ถ้า ไม่ เป็น relay แล้วเป็นแบบ trigger
       if (this.panel.damOptions.switchMode === 'trigger') {
         if (this.panel.damOptions.control !== 'mqtt') {
-          if (this.panel.method === 'POST') {
-            axios
-              .post(this.panel.damUrl, {
-                key: this.panel.damOptions.control,
-                value: this.panel.damOptions.trigMessage,
-              })
-              .then(response => {
-                this.panel.loading = false;
-                console.log(response);
-                this.refresh();
-              })
-              .catch(error => {
-                this.panel.loading = false;
-                console.log(error);
-                this.refresh();
-              });
-          } else if (this.panel.method === 'GET') {
-            axios
-              .get(this.panel.damUrl, {
-                // value: this.panel.damOptions.trigMessage,
-              })
-              .then(response => {
-                this.panel.loading = false;
-                console.log(response);
-                this.refresh();
-              })
-              .catch(error => {
-                this.panel.loading = false;
-                console.log(error);
-                this.refresh();
-              });
-          }
+          axios
+            .post(this.panel.damUrl, {
+              key: this.panel.damOptions.control,
+              value: this.panel.damOptions.trigMessage,
+            })
+            .then(response => {
+              this.panel.loading = false;
+              console.log(response);
+              this.refresh();
+            })
+            .catch(error => {
+              this.panel.loading = false;
+              console.log(error);
+              this.refresh();
+            });
         } else {
-          if (this.panel.method === 'POST') {
-            axios
-              .post(this.panel.damUrl, {
-                key: this.panel.damOptions.control,
-                value: this.panel.damOptions.trigMessage,
-                topic: this.panel.damOptions.mqttTopic,
-              })
-              .then(response => {
-                this.panel.loading = false;
-                console.log(response);
-                this.refresh();
-              })
-              .catch(error => {
-                this.panel.loading = false;
-                console.log(error);
-                this.refresh();
-              });
-          } else if (this.panel.method === 'GET') {
-            axios
-              .get(this.panel.damUrl, {
-                // value: this.panel.damOptions.trigMessage,
-              })
-              .then(response => {
-                this.panel.loading = false;
-                console.log(response);
-                this.refresh();
-              })
-              .catch(error => {
-                this.panel.loading = false;
-                console.log(error);
-                this.refresh();
-              });
-          }
+          axios
+            .post(this.panel.damUrl, {
+              key: this.panel.damOptions.control,
+              value: this.panel.damOptions.trigMessage,
+              topic: this.panel.damOptions.mqttTopic.toString(),
+            })
+            .then(response => {
+              this.panel.loading = false;
+              console.log(response);
+              this.refresh();
+            })
+            .catch(error => {
+              this.panel.loading = false;
+              console.log(error);
+              this.refresh();
+            });
         }
       } else if (this.panel.damOptions.switchMode === 'toggle') {
         if (this.panel.switchButton === false) {
@@ -279,7 +218,7 @@ export default class SimpleCtrl extends MetricsPanelCtrl {
             .post(this.panel.damUrl, {
               key: this.panel.damOptions.control,
               value: this.panel.valueSwitch,
-              topic: this.panel.damOptions.mqttTopic,
+              topic: this.panel.damOptions.mqttTopic.toString(),
             })
             .then(response => {
               this.panel.loading = false;
