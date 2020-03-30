@@ -1,20 +1,74 @@
 <!-- Display -->
 <!-- <h2>{{ctrl.panel.text}}</h2> -->
-{{ctrl.panel.loading}}
-{{ctrl.time}}
-<button type="button" class="btn" ng-click="ctrl.sendData()" style="height:100%;width:100%;padding: 3%;" ng-style="{'color': ctrl.panel.textColor,
+<!-- {{ctrl.panel.loading}}
+{{ctrl.time}} -->
+<!-- {{ctrl.panel.switchButton}} -->
+<button 
+  type="button" 
+  class="btn" 
+  ng-if="ctrl.panel.switchButton"
+  ng-click="ctrl.sendData(1)" 
+  style="height:100%;width:100%;padding: 3%;" 
+  ng-style="{'color': ctrl.panel.textColor,
   'background-color': ctrl.panel.bgColor,
   'font-size': ctrl.panel.fontSize}">
 
   <div class="flex-container">
-    <img id="img1" ng-if="ctrl.panel.img && !ctrl.panel.loading" ng-src="{{ctrl.panel.img}}"
-      ng-style="{'width':ctrl.panel.imgSize}">
-    <div id="sp_load" ng-if="ctrl.panel.loading" class="sp-loading"></div>
+    <div>
+      <img id="img1"
+        ng-if="ctrl.panel.img && !ctrl.panel.loading"
+        ng-src="{{ctrl.panel.img}}"
+        ng-style="{'width':ctrl.panel.imgSize}">
+    </div>
+    
+    <div 
+      id="sp_load" 
+      ng-if="ctrl.panel.loading" 
+      class="sp-loading" 
+      ng-style="{'width':ctrl.panel.imgSize,'height':ctrl.panel.imgSize}">
+    </div>
+
     <div>
       {{ctrl.panel.textButton}}
     </div>
   </div>
+
 </button>
+
+<button 
+  ng-if="(!((ctrl.panel.damOptions.control == 'relay' && ctrl.panel.damOptions.mode != 'toggle')
+  ||
+  (ctrl.panel.damOptions.control != 'relay' && ctrl.panel.damOptions.switchMode != 'toggle')))&&!ctrl.panel.switchButton"
+  type="button" 
+  class="btn" 
+  ng-click="ctrl.sendData(2)" 
+  style="height:100%;width:100%;padding: 3%;" 
+  ng-style="{'color': ctrl.panel.textColor2,
+  'background-color': ctrl.panel.bgColor2,
+  'font-size': ctrl.panel.fontSize2}">
+
+  <div class="flex-container">
+    <div>
+      <img id="img1"
+        ng-if="ctrl.panel.img2 && !ctrl.panel.loading2"
+        ng-src="{{ctrl.panel.img2}}"
+        ng-style="{'width':ctrl.panel.imgSize2}">
+    </div>
+    
+    <div 
+      id="sp_load" 
+      ng-if="ctrl.panel.loading2" 
+      class="sp-loading" 
+      ng-style="{'width':ctrl.panel.imgSize2,'height':ctrl.panel.imgSize2}">
+    </div>
+
+    <div>
+      {{ctrl.panel.textButton2}}
+    </div>
+  </div>
+
+</button>
+
 <div ng-repeat="first in ctrl.firstValues">
   <b>{{first.key}}:</b> {{first.value}}
 </div>
@@ -22,9 +76,9 @@
 <style>
   .sp-loading {
     display: inline-block;
-    width: 100px;
-    height: 100px;
-    border: 9px solid rgba(255, 255, 255, .3);
+    /* width: 100px;
+    height: 100px; */
+    border: 10px solid rgba(255, 255, 255, .3);
     border-radius: 50%;
     border-top-color: #fff;
     animation: spin 1s ease-in-out infinite;
