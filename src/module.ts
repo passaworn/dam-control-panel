@@ -177,7 +177,7 @@ export default class SimpleCtrl extends MetricsPanelCtrl {
             .post(this.panel.damUrl, {
               key: this.panel.damOptions.control,
               value: this.panel.damOptions.trigMessage,
-              topic: this.panel.damOptions.mqttTopic.toString(),
+              topic: this.panel.damOptions.mqttTopic,
             })
             .then(response => {
               this.panel.loading = false;
@@ -218,7 +218,7 @@ export default class SimpleCtrl extends MetricsPanelCtrl {
             .post(this.panel.damUrl, {
               key: this.panel.damOptions.control,
               value: this.panel.valueSwitch,
-              topic: this.panel.damOptions.mqttTopic.toString(),
+              topic: this.panel.damOptions.mqttTopic,
             })
             .then(response => {
               this.panel.loading = false;
