@@ -1,0 +1,33 @@
+<div class="editor-row">
+    <div class="section gf-form-group">
+        {{ctrl.panel.loading}}
+        {{ctrl.time}}
+        <h1 ng-bind="ctrl.panel.loading"></h1>
+        <h5 class="section-heading">DisplayTest2</h5>
+        <div class="gf-form">
+            <label class="gf-form-label width-9">Text Button</label>
+            <input type="text" ng-model="ctrl.panel.textButton" ng-change="ctrl.sendData()" class="gf-form-input"
+                ng-blur="ctrl.render()" min="1" />
+        </div>
+        <div class="gf-form">
+            <label class="gf-form-label width-9">Font Size</label>
+            <input type="text" ng-model="ctrl.panel.fontSize" class="gf-form-input" ng-blur="ctrl.render()" min="1" />
+        </div>
+        <div class="gf-form">
+            <label class="gf-form-label width-9">Text Color</label>
+            <input type="text" ng-model="ctrl.panel.textColor" class="gf-form-input" ng-blur="ctrl.render()" min="1" />
+        </div>
+        <div class="gf-form">
+            <label class="gf-form-label width-9">Background Color</label>
+            <input type="text" ng-model="ctrl.panel.bgColor" class="gf-form-input" ng-blur="ctrl.render()" min="1" />
+        </div>
+        <div class="gf-form">
+            <label class="gf-form-label width-9">Image</label>
+            <input type="text" ng-model="ctrl.panel.img" class="gf-form-input" ng-blur="ctrl.render()" min="1" />
+        </div>
+        <div class="gf-form">
+            <label class="gf-form-label width-9">Image size</label>
+            <input type="text" ng-model="ctrl.panel.imgSize" class="gf-form-input" ng-blur="ctrl.render()" min="1" />
+        </div>
+    </div>
+</div>
