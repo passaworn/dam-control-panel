@@ -43,13 +43,13 @@
         Mode
       </span>
       <div class="gf-form-select-wrapper width-9">
-        <select class="gf-form-input" ng-model="ctrl.panel.damOptions.mode" ng-change="ctrl.onConfigChanged()"
+        <select class="gf-form-input" ng-model="ctrl.panel.damOptions.mode" ng-change="ctrl.onConfigChanged();ctrl.modeChanged();"
           ng-if="ctrl.isRelay">
           <option value="on">Set ON</option>
           <option value="off">Set OFF</option>
           <option value="toggle">Toggle</option>
         </select>
-        <select class="gf-form-input" ng-model="ctrl.panel.damOptions.switchMode" ng-change="ctrl.onConfigChanged()"
+        <select class="gf-form-input" ng-model="ctrl.panel.damOptions.switchMode" ng-change="ctrl.onConfigChanged();ctrl.modeChanged()"
           ng-if="!ctrl.isRelay">
           <option value="trigger">Trigger</option>
           <option value="toggle">Toggle</option>
@@ -73,14 +73,14 @@
         <span class="gf-form-label width-9">
           Toggle ON msg
         </span>
-        <input type="text" class="input-large gf-form-input" ng-model="ctrl.panel.damOptions.trigMessage"
+        <input type="text" class="input-large gf-form-input" ng-model="ctrl.panel.damOptions.ToggleONMessage"
           ng-change="ctrl.onConfigChanged()" ng-model-onblur />
       </div>
       <div class="gf-form">
         <span class="gf-form-label width-9">
           Toggle OFF msg
         </span>
-        <input type="text" class="input-large gf-form-input" ng-model="ctrl.panel.damOptions.trigMessage"
+        <input type="text" class="input-large gf-form-input" ng-model="ctrl.panel.damOptions.ToggleOFFMessage"
           ng-change="ctrl.onConfigChanged()" ng-model-onblur />
       </div>
     </div>
