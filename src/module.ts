@@ -14,12 +14,19 @@ export default class SimpleCtrl extends MetricsPanelCtrl {
   isRelay = true;
   isMqtt = false;
   panelDefaults = {
-    textButton: 'test',
+    textButton: 'ON',
     fontSize: '50px',
-    bgColor: 'rgba(0,255,0,0.5)',
-    img: 'https://image.flaticon.com/icons/svg/402/402593.svg',
+    textColor: '#C8F2C2',
+    bgColor: '#37872D',
+    img: 'https://image.flaticon.com/icons/svg/607/607300.svg',
     imgSize: '150',
-    switchButton: false,
+    textButton2: 'OFF',
+    fontSize2: '50px',
+    textColor2: '#FFA6B0',
+    bgColor2: '#C4162A',
+    img2: 'https://image.flaticon.com/icons/svg/2374/2374355.svg',
+    imgSize2: '150',
+    switchButton: true,
     valueSwitch: '',
     loading: false,
     text: 'Hello World',
