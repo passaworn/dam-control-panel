@@ -62,8 +62,8 @@
         </h5>
         <div class="gf-form">
             <label class="gf-form-label width-9">Text Button</label>
-            <input type="text" ng-model="ctrl.panel.textButton2" class="gf-form-input" ng-blur="ctrl.render()"
-                min="1" />
+            <input type="text" ng-model="ctrl.panel.textButton2" class="gf-form-input" ng-change="ctrl.chkNull()""
+                min=" 1" />
         </div>
         <div class="gf-form">
             <label class="gf-form-label width-9">Font Size</label>
@@ -87,7 +87,7 @@
         </div>
         <div class="gf-form">
             <label class="gf-form-label width-9">Image</label>
-            <input type="text" ng-model="ctrl.panel.img2" class="gf-form-input" ng-blur="ctrl.render()" min="1" />
+            <input type="text" ng-model="ctrl.panel.img2" class="gf-form-input" ng-change="ctrl.chkNull()" />
         </div>
         <!-- <div class="gf-form">
             <label class="gf-form-label width-9">Image size</label>
