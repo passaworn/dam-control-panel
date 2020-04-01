@@ -8,13 +8,26 @@ interface KeyValue {
   key: string;
   value: any;
 }
-
+const BASE_FONT_SIZE = 38;
 export default class SimpleCtrl extends MetricsPanelCtrl {
   static templateUrl = 'partials/module.html';
   isRelay = true;
   isMqtt = false;
+  fontSizes: any[] = [];
   panelDefaults = {
     textButton: 'ON',
+    valueFontSize: '80%',
+    valueFontSize2: '80%',
+    textOnly: false,
+    imgOnly: false,
+    textImg: true,
+    textOnly2: false,
+    imgOnly2: false,
+    textImg2: true,
+    imgGridPer: 0,
+    textGridPer: 0,
+    imgGridPer2: 0,
+    textGridPer2: 0,
     fontSize: '50px',
     textColor: '#C8F2C2',
     bgColor: '#37872D',
@@ -55,6 +68,7 @@ export default class SimpleCtrl extends MetricsPanelCtrl {
 
     // Get results directly as DataFrames
     (this as any).dataFormat = 'series';
+    console.log(document.getElementsByClassName("dam-image"));
 
     this.events.on('init-edit-mode', this.onInitEditMode.bind(this));
     this.events.on('render', this.onRender.bind(this));
@@ -63,16 +77,20 @@ export default class SimpleCtrl extends MetricsPanelCtrl {
   }
 
   onInitEditMode() {
+    this.fontSizes = ['20%', '30%', '50%', '70%', '80%', '100%', '110%', '120%', '150%', '170%', '200%'];
     this.addEditorTab('General', `public/plugins/${this.pluginId}/partials/options.html`, 2);
     this.addEditorTab('Option Controls', `public/plugins/${this.pluginId}/partials/controls.html`, 2);
     this.addEditorTab('Display', `public/plugins/${this.pluginId}/partials/display.html`, 2);
+    this.chkNull();
   }
 
   onRender() {
     console.log('renderr');
+
     if (!this.firstValues || !this.firstValues.length) {
       return;
     }
+
     // Tells the screen capture system that you finished
     this.renderingCompleted();
   }
@@ -111,7 +129,84 @@ export default class SimpleCtrl extends MetricsPanelCtrl {
   modeChanged() {
     this.panel.switchButton = true;
   }
+  link(scope, elem, attrs, ctrl) {
 
+    // const panelContainer = (elem.find('.dam-control-panel')[0]);
+    // const image = (panelContainer.querySelector('#imageit-image'));
+    // const $panelGrid = (elem.find('.dam-control-grid'));
+    // const image = (panelContainer.querySelector('#imageit-image'));
+
+    this.events.on('render', () => {
+      // const $panelGrid2 = elem.closest('#dam-grid');
+      // console.log($panelGrid2);
+      // $panelGrid2.css('font-size', '20px');
+      // const $panelContainer = elem.find('.panel-container');
+
+      // if (this.panel.bgColor) {
+      //   $panelContainer.css('background-color', this.panel.bgColor);
+      // } else {
+      //   $panelContainer.css('background-color', '');
+      // }
+      // console.log(ctrl);
+
+    });
+  }
+  chkNull() {
+    if (this.panel.textButton && this.panel.img) {
+      this.panel.imgGridPer = 80;
+      this.panel.textGridPer = 20;
+      this.panel.textImg = true;
+      this.panel.imgOnly = false;
+      this.panel.textOnly = false;
+    } else {
+      if (this.panel.textButton) {
+        this.panel.textGridPer = 100;
+        this.panel.textImg = false;
+        this.panel.imgOnly = false;
+        this.panel.textOnly = true;
+      }
+      if (this.panel.img) {
+        this.panel.imgGridPer = 100;
+        this.panel.textImg = false;
+        this.panel.imgOnly = true;
+        this.panel.textOnly = false;
+      }
+    }
+    if (this.panel.textButton2 && this.panel.img2) {
+      this.panel.imgGridPer2 = 80;
+      this.panel.textGridPer2 = 20;
+      this.panel.textImg2 = true;
+      this.panel.imgOnly2 = false;
+      this.panel.textOnly2 = false;
+    } else {
+      if (this.panel.textButton2) {
+        this.panel.textGridPer2 = 100;
+        this.panel.textImg2 = false;
+        this.panel.imgOnly2 = false;
+        this.panel.textOnly2 = true;
+      }
+      if (this.panel.img2) {
+        this.panel.imgGridPer2 = 100;
+        this.panel.textImg2 = false;
+        this.panel.imgOnly2 = true;
+        this.panel.textOnly2 = false;
+      }
+    }
+
+    console.log(this.panel.textImg, this.panel.imgOnly, this.panel.textOnly);
+
+    this.render();
+  }
+  calFontSize() {
+    const pixelSize = (parseInt(this.panel.valueFontSize, 10) / 100) * BASE_FONT_SIZE;
+    this.panel.fontSize = pixelSize + 'px';
+    this.render();
+  }
+  calFontSize2() {
+    const pixelSize = (parseInt(this.panel.valueFontSize2, 10) / 100) * BASE_FONT_SIZE;
+    this.panel.fontSize2 = pixelSize + 'px';
+    this.render();
+  }
   sendData(switchONOFF) {
     this.panel.loading = true;
     //   this.render();
