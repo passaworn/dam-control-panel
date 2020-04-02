@@ -1,0 +1,97 @@
+<div class="editor-row">
+    <div class="section gf-form-group">
+        <h5 class="section-heading"
+            ng-if="ctrl.panel.damOptions.control == 'relay' && ctrl.panel.damOptions.mode != 'toggle'">
+            Set <label style="text-transform: uppercase;">{{ctrl.panel.damOptions.mode}}</label>
+        </h5>
+        <h5 class="section-heading"
+            ng-if="ctrl.panel.damOptions.control == 'relay' && ctrl.panel.damOptions.mode == 'toggle'">
+            Set ON
+        </h5>
+        <h5 class="section-heading"
+            ng-if="ctrl.panel.damOptions.control != 'relay' && ctrl.panel.damOptions.switchMode == 'toggle'">
+            Toggle ON msg
+        </h5>
+        <h5 class="section-heading"
+            ng-if="ctrl.panel.damOptions.control != 'relay' && ctrl.panel.damOptions.switchMode != 'toggle'">
+            Trigger msg
+        </h5>
+        <!-- <h5 class="section-heading">Display</h5> -->
+        <div class="gf-form">
+            <label class="gf-form-label width-9">Text Button</label>
+            <input type="text" ng-model="ctrl.panel.textButton" class="gf-form-input" ng-change="ctrl.chkNull()" />
+        </div>
+        <div class="gf-form">
+            <label class="gf-form-label width-9">Font Size</label>
+            <!-- <input type="text" ng-model="ctrl.panel.fontSize" class="gf-form-input" ng-blur="ctrl.render()" min="1" /> -->
+
+            <select class="gf-form-input" ng-model="ctrl.panel.valueFontSize" ng-options="f for f in ctrl.fontSizes"
+                ng-change="ctrl.calFontSize()"></select>
+
+        </div>
+        <div class="gf-form">
+            <label class="gf-form-label width-9">Text Color</label>
+            <span class="max-width-10">
+                <spectrum-picker class="gf-form-input" ng-model="ctrl.panel.textColor" ng-change="ctrl.render()">
+                </spectrum-picker>
+            </span>
+        </div>
+        <div class="gf-form">
+            <label class="gf-form-label width-9">Background Color</label>
+            <span class="max-width-10">
+                <spectrum-picker class="gf-form-input" ng-model="ctrl.panel.bgColor" ng-change="ctrl.render()">
+                </spectrum-picker>
+            </span>
+        </div>
+        <div class="gf-form">
+            <label class="gf-form-label width-9">Image</label>
+            <input type="text" ng-model="ctrl.panel.img" class="gf-form-input" ng-change="ctrl.chkNull()" />
+        </div>
+        <!-- <div class="gf-form">
+            <label class="gf-form-label width-9">Image size</label>
+            <input type="text" ng-model="ctrl.panel.imgSize" class="gf-form-input" ng-blur="ctrl.render()" min="1" />
+        </div> -->
+    </div>
+    <div class="section gf-form-group"
+        ng-if="(ctrl.panel.damOptions.control == 'relay' && ctrl.panel.damOptions.mode == 'toggle')||(ctrl.panel.damOptions.control != 'relay' && ctrl.panel.damOptions.switchMode == 'toggle')">
+        <h5 class="section-heading" ng-if="ctrl.panel.damOptions.control == 'relay'">
+            Set OFF
+        </h5>
+        <h5 class="section-heading" ng-if="ctrl.panel.damOptions.control != 'relay'">
+            Toggle OFF msg
+        </h5>
+        <div class="gf-form">
+            <label class="gf-form-label width-9">Text Button</label>
+            <input type="text" ng-model="ctrl.panel.textButton2" class="gf-form-input" ng-change="ctrl.chkNull()""
+                min=" 1" />
+        </div>
+        <div class="gf-form">
+            <label class="gf-form-label width-9">Font Size</label>
+            <!-- <input type="text" ng-model="ctrl.panel.fontSize2" class="gf-form-input" ng-blur="ctrl.render()" min="1" /> -->
+            <select class="gf-form-input" ng-model="ctrl.panel.valueFontSize2" ng-options="f for f in ctrl.fontSizes"
+                ng-change="ctrl.calFontSize2()"></select>
+        </div>
+        <div class="gf-form">
+            <label class="gf-form-label width-9">Text Color</label>
+            <span class="max-width-10">
+                <spectrum-picker class="gf-form-input" ng-model="ctrl.panel.textColor2" ng-change="ctrl.render()">
+                </spectrum-picker>
+            </span>
+        </div>
+        <div class="gf-form">
+            <label class="gf-form-label width-9">Background Color</label>
+            <span class="max-width-10">
+                <spectrum-picker class="gf-form-input" ng-model="ctrl.panel.bgColor2" ng-change="ctrl.render()">
+                </spectrum-picker>
+            </span>
+        </div>
+        <div class="gf-form">
+            <label class="gf-form-label width-9">Image</label>
+            <input type="text" ng-model="ctrl.panel.img2" class="gf-form-input" ng-change="ctrl.chkNull()" />
+        </div>
+        <!-- <div class="gf-form">
+            <label class="gf-form-label width-9">Image size</label>
+            <input type="text" ng-model="ctrl.panel.imgSize2" class="gf-form-input" ng-blur="ctrl.render()" min="1" />
+        </div> -->
+    </div>
+</div>
