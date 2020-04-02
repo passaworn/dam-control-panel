@@ -15,13 +15,14 @@ export default class SimpleCtrl extends MetricsPanelCtrl {
   isMqtt = false;
   panelDefaults = {
     textButton: 'ON',
-    fontSize: '50px',
+    fontSize: 50,
+    reFontSize: 0,
     textColor: '#C8F2C2',
     bgColor: '#37872D',
     img: 'https://image.flaticon.com/icons/svg/607/607300.svg',
     imgSize: '150',
     textButton2: 'OFF',
-    fontSize2: '50px',
+    fontSize2: 50,
     textColor2: '#FFA6B0',
     bgColor2: '#C4162A',
     img2: 'https://image.flaticon.com/icons/svg/2374/2374355.svg',
@@ -33,6 +34,7 @@ export default class SimpleCtrl extends MetricsPanelCtrl {
     request: 'http',
     // method: 'GET',
     damUrl: 'http://127.0.0.1:1880/test',
+    successAray: [],
     damOptions: {
       control: 'relay',
       relayChanel: '1',
@@ -66,6 +68,18 @@ export default class SimpleCtrl extends MetricsPanelCtrl {
     this.addEditorTab('General', `public/plugins/${this.pluginId}/partials/options.html`, 2);
     this.addEditorTab('Option Controls', `public/plugins/${this.pluginId}/partials/controls.html`, 2);
     this.addEditorTab('Display', `public/plugins/${this.pluginId}/partials/display.html`, 2);
+  }
+  link(scope, elem, attrs, ctrl) {
+    this.events.on('render', () => {
+      console.log('renderrrrrr');
+      // var widthBTN = elem.find('.btn')[0].offsetWidth;
+      // this.panel.reFontSize = (widthBTN * this.panel.fontSize) / 1870;
+      // console.log(widthBTN);
+      // console.log(this.panel.reFontSize);
+    });
+    // setTimeout(function() {
+    //   elem.find('page-alert-list')[0].innerHTML = '';
+    // }, 3000);
   }
 
   onRender() {
@@ -112,8 +126,21 @@ export default class SimpleCtrl extends MetricsPanelCtrl {
     this.panel.switchButton = true;
   }
 
+  closeAlert(value, status) {
+    this.panel.successAray.push({
+      createdAt: Date.now(),
+      value: value,
+      status: status,
+    });
+    setTimeout(() => {
+      this.panel.successAray.shift();
+      console.log('SHIFT');
+      this.refresh();
+    }, 3000);
+  }
+
   sendData(switchONOFF) {
-    this.panel.loading = true;
+    // this.panel.loading = true;
     //   this.render();
     //   this.refresh();
     if (this.panel.damOptions.control === 'relay') {
@@ -151,11 +178,17 @@ export default class SimpleCtrl extends MetricsPanelCtrl {
           .then(response => {
             this.panel.loading = false;
             this.panel.switchButton = !this.panel.switchButton;
+            this.panel.successAray.push({
+              createdAt: Date.now(),
+              value: 'Save "RS232 Send" ok',
+              status: true,
+            });
             console.log(response);
             this.refresh();
           })
           .catch(error => {
             this.panel.loading = false;
+            this.closeAlert('POST Fail', false)
             console.log(error);
             this.refresh();
           });

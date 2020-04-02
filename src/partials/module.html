@@ -2,12 +2,12 @@
 <!-- <h2>{{ctrl.panel.text}}</h2> -->
 <!-- {{ctrl.panel.loading}}
 {{ctrl.time}} -->
-<!-- {{ctrl.panel.switchButton}} -->
+{{ctrl.panel.successAray}}
 <button 
   type="button" 
   class="btn" 
   ng-if="ctrl.panel.switchButton"
-  ng-click="ctrl.sendData(1)" 
+  ng-click="ctrl.sendData(1);link();" 
   style="height:100%;width:100%;padding: 3%;" 
   ng-style="{'color': ctrl.panel.textColor,
   'background-color': ctrl.panel.bgColor,
@@ -41,7 +41,7 @@
   (ctrl.panel.damOptions.control != 'relay' && ctrl.panel.damOptions.switchMode != 'toggle')))&&!ctrl.panel.switchButton"
   type="button" 
   class="btn" 
-  ng-click="ctrl.sendData(2)" 
+  ng-click="ctrl.sendData(2);link();" 
   style="height:100%;width:100%;padding: 3%;" 
   ng-style="{'color': ctrl.panel.textColor2,
   'background-color': ctrl.panel.bgColor2,
@@ -68,6 +68,35 @@
   </div>
 
 </button>
+
+<!-- <div class="col-3" style="position: fixed;z-index: 999;right: 2%;">
+  <div ng-repeat="i in ctrl.panel.successAray"  
+  ng-class="[i.status ? 'alert-success' : 'alert-danger']"
+  class="alert show" 
+  role="alert" 
+  style="box-shadow: 5px 5px 10px 0px rgba(204,204,204,1);">
+    <h4 ng-if="i.status" class="alert-heading">Success</h4>
+    <h4 ng-if="!i.status" class="alert-heading">Fail</h4>
+    <hr>
+    <p class="mb-0"> {{i.value}} </p>
+  </div>
+</div> -->
+
+<div>
+  <div class="alert-container" style="position: fixed;z-index: 999;right: 2%;top: 2%;">
+      <div 
+      ng-repeat="i in ctrl.panel.successAray"
+      ng-class="[i.status ? 'alert-success' : 'alert-danger']"
+      class="alert">
+          <div ng-if="i.status" class="alert-icon"><i class="fa fa-check"></i></div>
+          <div ng-if="!i.status" class="alert-icon"><i class="fa fa-times-circle"></i></div>
+          <div class="alert-body">
+              <div class="alert-title">{{i.value}}</div>
+          </div>
+          <button type="button" class="alert-close"><i class="fa fa fa-remove"></i></button>
+      </div>
+  </div>
+</div>
 
 <div ng-repeat="first in ctrl.firstValues">
   <b>{{first.key}}:</b> {{first.value}}
