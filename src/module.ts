@@ -4,6 +4,7 @@ import _ from 'lodash';
 import { DataFrame } from '@grafana/data';
 import axios from 'axios';
 // import { examples } from './examples';
+
 interface KeyValue {
   key: string;
   value: any;
@@ -60,7 +61,7 @@ export default class SimpleCtrl extends MetricsPanelCtrl {
   firstValues: KeyValue[] = [];
   time = 'timenull';
   /** @ngInject */
-  constructor($scope, $injector) {
+  constructor($scope, $injector, public $rootScope: any) {
     super($scope, $injector);
     defaultsDeep(this.panel, this.panelDefaults);
 
@@ -68,7 +69,6 @@ export default class SimpleCtrl extends MetricsPanelCtrl {
 
     // Get results directly as DataFrames
     (this as any).dataFormat = 'series';
-    console.log(document.getElementsByClassName("dam-image"));
 
     this.events.on('init-edit-mode', this.onInitEditMode.bind(this));
     this.events.on('render', this.onRender.bind(this));
@@ -82,10 +82,11 @@ export default class SimpleCtrl extends MetricsPanelCtrl {
     this.addEditorTab('Option Controls', `public/plugins/${this.pluginId}/partials/controls.html`, 2);
     this.addEditorTab('Display', `public/plugins/${this.pluginId}/partials/display.html`, 2);
     this.chkNull();
+    // console.log(this.$rootScope);
   }
 
   onRender() {
-    console.log('renderr');
+    // console.log('renderr');
 
     if (!this.firstValues || !this.firstValues.length) {
       return;
@@ -100,7 +101,7 @@ export default class SimpleCtrl extends MetricsPanelCtrl {
   }
   onPanelInitalized() {
     this.updateTemplate();
-    console.log('onInit');
+    // console.log('onInit');
   }
   // 6.3+ get typed DataFrame directly
   handleDataFrame(data: DataFrame[]) {
@@ -130,7 +131,6 @@ export default class SimpleCtrl extends MetricsPanelCtrl {
     this.panel.switchButton = true;
   }
   link(scope, elem, attrs, ctrl) {
-
     // const panelContainer = (elem.find('.dam-control-panel')[0]);
     // const image = (panelContainer.querySelector('#imageit-image'));
     // const $panelGrid = (elem.find('.dam-control-grid'));
@@ -141,14 +141,12 @@ export default class SimpleCtrl extends MetricsPanelCtrl {
       // console.log($panelGrid2);
       // $panelGrid2.css('font-size', '20px');
       // const $panelContainer = elem.find('.panel-container');
-
       // if (this.panel.bgColor) {
       //   $panelContainer.css('background-color', this.panel.bgColor);
       // } else {
       //   $panelContainer.css('background-color', '');
       // }
       // console.log(ctrl);
-
     });
   }
   chkNull() {
@@ -216,17 +214,21 @@ export default class SimpleCtrl extends MetricsPanelCtrl {
       if (this.panel.damOptions.mode !== 'toggle') {
         axios
           .post(this.panel.damUrl, {
-            key: 'relay' + this.panel.damOptions.relayChanel,
+            key: 'relay',
+            chanel: this.panel.damOptions.relayChanel,
             value: this.panel.damOptions.mode,
           })
           .then(response => {
             this.panel.loading = false;
             console.log(response);
             this.refresh();
+            const alertText = `Relay ${this.panel.damOptions.relayChanel} : ${this.panel.damOptions.mode}`;
+            this.$rootScope.appEvent('alert-success', ['Success', alertText]);
           })
           .catch(error => {
             this.panel.loading = false;
-            console.log(error);
+            console.log(error.response);
+            this.$rootScope.appEvent('alert-error', ['Error', error.response]);
             this.refresh();
           });
       } else {
@@ -240,18 +242,22 @@ export default class SimpleCtrl extends MetricsPanelCtrl {
         }
         axios
           .post(this.panel.damUrl, {
-            key: 'relay' + this.panel.damOptions.relayChanel,
+            key: 'relay',
+            chanel: this.panel.damOptions.relayChanel,
             value: this.panel.valueSwitch,
           })
           .then(response => {
             this.panel.loading = false;
             this.panel.switchButton = !this.panel.switchButton;
             console.log(response);
+            const alertText = `Relay ${this.panel.damOptions.relayChanel} : ${this.panel.valueSwitch}`;
+            this.$rootScope.appEvent('alert-success', ['Success', alertText]);
             this.refresh();
           })
           .catch(error => {
             this.panel.loading = false;
-            console.log(error);
+            console.log('res', error.response);
+            this.$rootScope.appEvent('alert-error', ['Error', error.response]);
             this.refresh();
           });
       }
@@ -267,11 +273,14 @@ export default class SimpleCtrl extends MetricsPanelCtrl {
             .then(response => {
               this.panel.loading = false;
               console.log(response);
+              const alertText = `Trigger ${this.panel.damOptions.control}`;
+              this.$rootScope.appEvent('alert-success', ['Success', alertText]);
               this.refresh();
             })
             .catch(error => {
               this.panel.loading = false;
-              console.log(error);
+              console.log(error.response);
+              this.$rootScope.appEvent('alert-error', ['Error', error.response]);
               this.refresh();
             });
         } else {
@@ -284,11 +293,14 @@ export default class SimpleCtrl extends MetricsPanelCtrl {
             .then(response => {
               this.panel.loading = false;
               console.log(response);
+              const alertText = `Trigger ${this.panel.damOptions.control}`;
+              this.$rootScope.appEvent('alert-success', ['Success', alertText]);
               this.refresh();
             })
             .catch(error => {
               this.panel.loading = false;
-              console.log(error);
+              console.log(error.response);
+              this.$rootScope.appEvent('alert-error', ['Error', error.response]);
               this.refresh();
             });
         }
@@ -308,11 +320,15 @@ export default class SimpleCtrl extends MetricsPanelCtrl {
               this.panel.loading = false;
               this.panel.switchButton = !this.panel.switchButton;
               console.log(response);
+              const valSW = this.panel.switchButton ? 'ON' : 'OFF';
+              const alertText = `Toggle ${valSW} ${this.panel.damOptions.control}`;
+              this.$rootScope.appEvent('alert-success', ['Success', alertText]);
               this.refresh();
             })
             .catch(error => {
               this.panel.loading = false;
-              console.log(error);
+              console.log(error.response);
+              this.$rootScope.appEvent('alert-error', ['Error', error.response]);
               this.refresh();
             });
         } else {
@@ -326,11 +342,15 @@ export default class SimpleCtrl extends MetricsPanelCtrl {
               this.panel.loading = false;
               this.panel.switchButton = !this.panel.switchButton;
               console.log(response);
+              const valSW = this.panel.switchButton ? 'ON' : 'OFF';
+              const alertText = `Toggle ${valSW} ${this.panel.damOptions.control}`;
+              this.$rootScope.appEvent('alert-success', ['Success', alertText]);
               this.refresh();
             })
             .catch(error => {
               this.panel.loading = false;
-              console.log(error);
+              console.log(error.response);
+              this.$rootScope.appEvent('alert-error', ['Error', error.response]);
               this.refresh();
             });
         }
