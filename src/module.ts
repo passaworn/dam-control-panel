@@ -1,3 +1,4 @@
+//test
 import { MetricsPanelCtrl } from 'grafana/app/plugins/sdk';
 import defaultsDeep from 'lodash/defaultsDeep';
 import _ from 'lodash';
