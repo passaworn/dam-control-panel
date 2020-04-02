@@ -1,7 +1,8 @@
-## Simple Angular Panel
-[![CircleCI](https://circleci.com/gh/grafana/simple-angular-panel.svg?style=svg)](https://circleci.com/gh/grafana/simple-angular-panel)
+## DAM CONTROL PANEL
 
-Hello world showing series in Grafana panel.
+<!-- [![CircleCI](https://circleci.com/gh/grafana/simple-angular-panel.svg?style=svg)](https://circleci.com/gh/grafana/simple-angular-panel) -->
+
+DAM Grafana panel.
 
 ### Building this plugin
 
