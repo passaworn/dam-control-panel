@@ -178,17 +178,12 @@ export default class SimpleCtrl extends MetricsPanelCtrl {
           .then(response => {
             this.panel.loading = false;
             this.panel.switchButton = !this.panel.switchButton;
-            this.panel.successAray.push({
-              createdAt: Date.now(),
-              value: 'Save "RS232 Send" ok',
-              status: true,
-            });
             console.log(response);
             this.refresh();
           })
           .catch(error => {
             this.panel.loading = false;
-            this.closeAlert('POST Fail', false)
+            this.closeAlert('POST Fail', false);
             console.log(error);
             this.refresh();
           });
