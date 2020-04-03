@@ -42,7 +42,7 @@
   'font-size': ctrl.panel.fontSize2}"> -->
 
   <div
-    ng-if="(!((ctrl.panel.damOptions.control == 'relay' && ctrl.panel.damOptions.mode != 'toggle')
+    ng-if="(!((ctrl.panel.damOptions.control == 'relay' && ctrl.panel.damOptions.mode == 'on')
   ||
   (ctrl.panel.damOptions.control != 'relay' && ctrl.panel.damOptions.switchMode != 'toggle')))&&!ctrl.panel.switchButton"
     ng-click="ctrl.sendData(1)"
@@ -50,14 +50,14 @@
     ng-click="ctrl.sendData(2)" ng-style="{'color': ctrl.panel.textColor2,
   'background-color': ctrl.panel.bgColor2,'max-height': ctrl.height}">
 
-    <img class="dam-control-image" ng-if="ctrl.panel.img2 && !ctrl.panel.loading2" ng-src="{{ctrl.panel.img2}} "
+    <img class="dam-control-image" ng-if="ctrl.panel.img2 && !ctrl.panel.loading" ng-src="{{ctrl.panel.img2}} "
       ng-style="{'max-height': (ctrl.height * ctrl.panel.imgGridPer2) /100}">
 
     <!-- ng-style="{'width':ctrl.panel.imgSize}"> -->
     <!-- ng-style="{'width': ctrl.width-150}" -->
     <!-- ng-style="{'max-height': ctrl.height}" -->
 
-    <div id="sp_load" ng-if="ctrl.panel.loading2" class="dam-control-sp-loading"
+    <div id="sp_load" ng-if="ctrl.panel.loading" class="dam-control-sp-loading"
       ng-style="{'max-height': ctrl.height, 'width':ctrl.panel.imgSize,'height':ctrl.panel.imgSize}">
     </div>
 

@@ -40,7 +40,7 @@ export default class SimpleCtrl extends MetricsPanelCtrl {
     bgColor2: '#C4162A',
     img2: 'https://image.flaticon.com/icons/svg/2374/2374355.svg',
     imgSize2: '150',
-    switchButton: true,
+    switchButton: false,
     valueSwitch: '',
     loading: false,
     text: 'Hello World',
@@ -127,8 +127,22 @@ export default class SimpleCtrl extends MetricsPanelCtrl {
     this.isMqtt = this.panel.damOptions.control === 'mqtt';
   }
 
-  modeChanged() {
-    this.panel.switchButton = true;
+  modeChanged(value) {
+    if (value !== 'relay') {
+      if (this.panel.damOptions.switchMode === 'toggle') {
+        this.panel.switchButton = false;
+      } else {
+        this.panel.switchButton = true;
+      }
+    } else {
+      if (this.panel.damOptions.mode === 'toggle') {
+        this.panel.switchButton = false;
+      } else if (this.panel.damOptions.mode === 'on') {
+        this.panel.switchButton = true;
+      } else if (this.panel.damOptions.mode === 'off') {
+        this.panel.switchButton = false;
+      }
+    }
   }
   link(scope, elem, attrs, ctrl) {
     // const panelContainer = (elem.find('.dam-control-panel')[0]);
@@ -207,30 +221,19 @@ export default class SimpleCtrl extends MetricsPanelCtrl {
   }
   sendData(switchONOFF) {
     this.panel.loading = true;
+    let isTroggle = false;
     //   this.render();
     //   this.refresh();
     if (this.panel.damOptions.control === 'relay') {
       // ถ้าเป็น relay แบบ ON,OFF
+      isTroggle = false;
       if (this.panel.damOptions.mode !== 'toggle') {
-        axios
-          .post(this.panel.damUrl, {
-            key: 'relay',
-            chanel: this.panel.damOptions.relayChanel,
-            value: this.panel.damOptions.mode,
-          })
-          .then(response => {
-            this.panel.loading = false;
-            console.log(response);
-            this.refresh();
-            const alertText = `Relay ${this.panel.damOptions.relayChanel} : ${this.panel.damOptions.mode}`;
-            this.$rootScope.appEvent('alert-success', ['Success', alertText]);
-          })
-          .catch(error => {
-            this.panel.loading = false;
-            console.log(error.response);
-            this.$rootScope.appEvent('alert-error', ['Error', error.response]);
-            this.refresh();
-          });
+        const data = {
+          key: 'relay',
+          chanel: this.panel.damOptions.relayChanel,
+          value: this.panel.damOptions.mode,
+        };
+        this.postData('Relay', isTroggle, data);
       } else {
         // ถ้าเป็น relay แล้วเป็นแบบ toggle
         if (this.panel.switchButton === false) {
@@ -240,69 +243,31 @@ export default class SimpleCtrl extends MetricsPanelCtrl {
           this.panel.valueSwitch = 'OFF';
           console.log(this.panel.valueSwitch);
         }
-        axios
-          .post(this.panel.damUrl, {
-            key: 'relay',
-            chanel: this.panel.damOptions.relayChanel,
-            value: this.panel.valueSwitch,
-          })
-          .then(response => {
-            this.panel.loading = false;
-            this.panel.switchButton = !this.panel.switchButton;
-            console.log(response);
-            const alertText = `Relay ${this.panel.damOptions.relayChanel} : ${this.panel.valueSwitch}`;
-            this.$rootScope.appEvent('alert-success', ['Success', alertText]);
-            this.refresh();
-          })
-          .catch(error => {
-            this.panel.loading = false;
-            console.log('res', error.response);
-            this.$rootScope.appEvent('alert-error', ['Error', error.response]);
-            this.refresh();
-          });
+        isTroggle = true;
+        const data = {
+          key: 'relay',
+          chanel: this.panel.damOptions.relayChanel,
+          value: this.panel.valueSwitch,
+        };
+        this.postData('Relay', isTroggle, data);
       }
     } else if (this.panel.damOptions.control !== 'relay') {
       // ถ้า ไม่ เป็น relay แล้วเป็นแบบ trigger
       if (this.panel.damOptions.switchMode === 'trigger') {
+        isTroggle = false;
         if (this.panel.damOptions.control !== 'mqtt') {
-          axios
-            .post(this.panel.damUrl, {
-              key: this.panel.damOptions.control,
-              value: this.panel.damOptions.trigMessage,
-            })
-            .then(response => {
-              this.panel.loading = false;
-              console.log(response);
-              const alertText = `Trigger ${this.panel.damOptions.control}`;
-              this.$rootScope.appEvent('alert-success', ['Success', alertText]);
-              this.refresh();
-            })
-            .catch(error => {
-              this.panel.loading = false;
-              console.log(error.response);
-              this.$rootScope.appEvent('alert-error', ['Error', error.response]);
-              this.refresh();
-            });
+          const data = {
+            key: this.panel.damOptions.control,
+            value: this.panel.damOptions.trigMessage,
+          };
+          this.postData(this.panel.damOptions.control, isTroggle, data);
         } else {
-          axios
-            .post(this.panel.damUrl, {
-              key: this.panel.damOptions.control,
-              value: this.panel.damOptions.trigMessage,
-              topic: this.panel.damOptions.mqttTopic,
-            })
-            .then(response => {
-              this.panel.loading = false;
-              console.log(response);
-              const alertText = `Trigger ${this.panel.damOptions.control}`;
-              this.$rootScope.appEvent('alert-success', ['Success', alertText]);
-              this.refresh();
-            })
-            .catch(error => {
-              this.panel.loading = false;
-              console.log(error.response);
-              this.$rootScope.appEvent('alert-error', ['Error', error.response]);
-              this.refresh();
-            });
+          const data = {
+            key: this.panel.damOptions.control,
+            value: this.panel.damOptions.trigMessage,
+            topic: this.panel.damOptions.mqttTopic,
+          };
+          this.postData(this.panel.damOptions.control, isTroggle, data);
         }
       } else if (this.panel.damOptions.switchMode === 'toggle') {
         if (this.panel.switchButton === false) {
@@ -310,52 +275,45 @@ export default class SimpleCtrl extends MetricsPanelCtrl {
         } else {
           this.panel.valueSwitch = this.panel.damOptions.ToggleONMessage;
         }
+        isTroggle = true;
         if (this.panel.damOptions.control !== 'mqtt') {
-          axios
-            .post(this.panel.damUrl, {
-              key: this.panel.damOptions.control,
-              value: this.panel.valueSwitch,
-            })
-            .then(response => {
-              this.panel.loading = false;
-              this.panel.switchButton = !this.panel.switchButton;
-              console.log(response);
-              const valSW = this.panel.switchButton ? 'ON' : 'OFF';
-              const alertText = `Toggle ${valSW} ${this.panel.damOptions.control}`;
-              this.$rootScope.appEvent('alert-success', ['Success', alertText]);
-              this.refresh();
-            })
-            .catch(error => {
-              this.panel.loading = false;
-              console.log(error.response);
-              this.$rootScope.appEvent('alert-error', ['Error', error.response]);
-              this.refresh();
-            });
+          const data = {
+            key: this.panel.damOptions.control,
+            value: this.panel.valueSwitch,
+          };
+          this.postData(this.panel.damOptions.control, isTroggle, data);
         } else {
-          axios
-            .post(this.panel.damUrl, {
-              key: this.panel.damOptions.control,
-              value: this.panel.valueSwitch,
-              topic: this.panel.damOptions.mqttTopic,
-            })
-            .then(response => {
-              this.panel.loading = false;
-              this.panel.switchButton = !this.panel.switchButton;
-              console.log(response);
-              const valSW = this.panel.switchButton ? 'ON' : 'OFF';
-              const alertText = `Toggle ${valSW} ${this.panel.damOptions.control}`;
-              this.$rootScope.appEvent('alert-success', ['Success', alertText]);
-              this.refresh();
-            })
-            .catch(error => {
-              this.panel.loading = false;
-              console.log(error.response);
-              this.$rootScope.appEvent('alert-error', ['Error', error.response]);
-              this.refresh();
-            });
+          const data = {
+            key: this.panel.damOptions.control,
+            value: this.panel.valueSwitch,
+            topic: this.panel.damOptions.mqttTopic,
+          };
+          this.postData(this.panel.damOptions.control, isTroggle, data);
         }
       }
     }
+  }
+
+  postData(control: string, isTroggle: boolean, data: any) {
+    axios
+      .post(this.panel.damUrl, data)
+      .then(response => {
+        this.panel.loading = false;
+        if (isTroggle) {
+          this.panel.switchButton = !this.panel.switchButton;
+        }
+        console.log(response);
+        this.refresh();
+        const alertText = `Success`;
+        this.$rootScope.appEvent('alert-success', ['Success', alertText]);
+      })
+      .catch(error => {
+        this.panel.loading = false;
+
+        console.log(error.response);
+        this.$rootScope.appEvent('alert-error', ['Error', error.response]);
+        this.refresh();
+      });
   }
 }
 

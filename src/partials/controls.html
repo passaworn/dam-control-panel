@@ -7,7 +7,7 @@
       </span>
       <div class="gf-form-select-wrapper width-9">
         <select class="gf-form-input" ng-model="ctrl.panel.damOptions.control"
-          ng-change="ctrl.updateTemplate(); ctrl.onConfigChanged()">
+          ng-change="ctrl.updateTemplate(); ctrl.onConfigChanged();ctrl.modeChanged(ctrl.panel.damOptions.control);">
           <option value="relay">RELAY</option>
           <option value="rs232">RS232</option>
           <option value="rs485">RS485</option>
@@ -43,13 +43,13 @@
         Mode
       </span>
       <div class="gf-form-select-wrapper width-9">
-        <select class="gf-form-input" ng-model="ctrl.panel.damOptions.mode" ng-change="ctrl.onConfigChanged();ctrl.modeChanged();"
+        <select class="gf-form-input" ng-model="ctrl.panel.damOptions.mode" ng-change="ctrl.onConfigChanged();ctrl.modeChanged(ctrl.panel.damOptions.control);"
           ng-if="ctrl.isRelay">
           <option value="on">Set ON</option>
           <option value="off">Set OFF</option>
           <option value="toggle">Toggle</option>
         </select>
-        <select class="gf-form-input" ng-model="ctrl.panel.damOptions.switchMode" ng-change="ctrl.onConfigChanged();ctrl.modeChanged()"
+        <select class="gf-form-input" ng-model="ctrl.panel.damOptions.switchMode" ng-change="ctrl.onConfigChanged();ctrl.modeChanged(ctrl.panel.damOptions.control);"
           ng-if="!ctrl.isRelay">
           <option value="trigger">Trigger</option>
           <option value="toggle">Toggle</option>
