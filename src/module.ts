@@ -40,7 +40,7 @@ export default class SimpleCtrl extends MetricsPanelCtrl {
     bgColor2: '#C4162A',
     img2: 'https://image.flaticon.com/icons/svg/2374/2374355.svg',
     imgSize2: '150',
-    switchButton: true,
+    switchButton: false,
     valueSwitch: '',
     loading: false,
     text: 'Hello World',
@@ -127,8 +127,22 @@ export default class SimpleCtrl extends MetricsPanelCtrl {
     this.isMqtt = this.panel.damOptions.control === 'mqtt';
   }
 
-  modeChanged() {
-    this.panel.switchButton = true;
+  modeChanged(value) {
+    if (value !== 'relay') {
+      if (this.panel.damOptions.switchMode === 'toggle') {
+        this.panel.switchButton = false;
+      } else {
+        this.panel.switchButton = true;
+      }
+    } else {
+      if (this.panel.damOptions.mode === 'toggle') {
+        this.panel.switchButton = false;
+      } else if (this.panel.damOptions.mode === 'on') {
+        this.panel.switchButton = true;
+      } else if (this.panel.damOptions.mode === 'off') {
+        this.panel.switchButton = false;
+      }
+    }
   }
   link(scope, elem, attrs, ctrl) {
     // const panelContainer = (elem.find('.dam-control-panel')[0]);

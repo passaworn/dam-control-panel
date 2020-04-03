@@ -42,7 +42,7 @@
   'font-size': ctrl.panel.fontSize2}"> -->
 
   <div
-    ng-if="(!((ctrl.panel.damOptions.control == 'relay' && ctrl.panel.damOptions.mode != 'toggle')
+    ng-if="(!((ctrl.panel.damOptions.control == 'relay' && ctrl.panel.damOptions.mode == 'on')
   ||
   (ctrl.panel.damOptions.control != 'relay' && ctrl.panel.damOptions.switchMode != 'toggle')))&&!ctrl.panel.switchButton"
     ng-click="ctrl.sendData(1)"
