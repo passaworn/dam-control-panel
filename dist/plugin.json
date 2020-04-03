@@ -1,0 +1,29 @@
+{
+  "type": "panel",
+  "name": "DAM Control",
+  "id": "dam-control-panel",
+
+  "info": {
+    "description": "DAM Panel control",
+    "author": {
+      "name": "mostori"
+    },
+    "keywords": ["dam"],
+    "logos": {
+      "small": "img/logo.svg",
+      "large": "img/logo.svg"
+    },
+    "links": [{
+      "name": "Project site",
+      "url": "https://gitlab.com/mostorii/grafana/dam-control-panel"
+    }],
+    "screenshots": [],
+    "version": "1.0.0",
+    "updated": "2020-04-03"
+  },
+
+  "dependencies": {
+    "grafanaVersion": "6.3.x",
+    "plugins": []
+  }
+}
