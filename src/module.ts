@@ -47,6 +47,7 @@ export default class SimpleCtrl extends MetricsPanelCtrl {
     request: 'http',
     // method: 'GET',
     damUrl: 'http://127.0.0.1:1880/test',
+    damSn: '',
     damOptions: {
       control: 'relay',
       relayChanel: '1',
@@ -82,6 +83,8 @@ export default class SimpleCtrl extends MetricsPanelCtrl {
     this.addEditorTab('Option Controls', `public/plugins/${this.pluginId}/partials/controls.html`, 2);
     this.addEditorTab('Display', `public/plugins/${this.pluginId}/partials/display.html`, 2);
     this.chkNull();
+    this.calFontSize();
+    this.calFontSize2();
     // console.log(this.$rootScope);
   }
 
@@ -229,6 +232,7 @@ export default class SimpleCtrl extends MetricsPanelCtrl {
       isTroggle = false;
       if (this.panel.damOptions.mode !== 'toggle') {
         const data = {
+          sn: this.panel.damSn,
           key: 'relay',
           chanel: this.panel.damOptions.relayChanel,
           value: this.panel.damOptions.mode,
@@ -245,6 +249,7 @@ export default class SimpleCtrl extends MetricsPanelCtrl {
         }
         isTroggle = true;
         const data = {
+          sn: this.panel.damSn,
           key: 'relay',
           chanel: this.panel.damOptions.relayChanel,
           value: this.panel.valueSwitch,
@@ -257,12 +262,14 @@ export default class SimpleCtrl extends MetricsPanelCtrl {
         isTroggle = false;
         if (this.panel.damOptions.control !== 'mqtt') {
           const data = {
+            sn: this.panel.damSn,
             key: this.panel.damOptions.control,
             value: this.panel.damOptions.trigMessage,
           };
           this.postData(this.panel.damOptions.control, isTroggle, data);
         } else {
           const data = {
+            sn: this.panel.damSn,
             key: this.panel.damOptions.control,
             value: this.panel.damOptions.trigMessage,
             topic: this.panel.damOptions.mqttTopic,
@@ -278,12 +285,14 @@ export default class SimpleCtrl extends MetricsPanelCtrl {
         isTroggle = true;
         if (this.panel.damOptions.control !== 'mqtt') {
           const data = {
+            sn: this.panel.damSn,
             key: this.panel.damOptions.control,
             value: this.panel.valueSwitch,
           };
           this.postData(this.panel.damOptions.control, isTroggle, data);
         } else {
           const data = {
+            sn: this.panel.damSn,
             key: this.panel.damOptions.control,
             value: this.panel.valueSwitch,
             topic: this.panel.damOptions.mqttTopic,
